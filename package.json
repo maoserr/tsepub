@@ -1,0 +1,48 @@
+{
+  "name": "tsepub",
+  "description": "Typescript Epub generator library",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.js",
+  "scripts": {
+    "watch": "tsc -w --sourcemap",
+    "compile": "node compile_template.js",
+    "build": "tsc",
+    "package": "npm run compile && npm run build && npm pack",
+    "test": "jest",
+    "all": "npm run package && npm test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoserr/tsepub.git"
+  },
+  "keywords": [
+    "epub",
+    "typescript",
+    "ebook",
+    "kindle"
+  ],
+  "author": "Mao Yu<maoserr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maoserr/tsepub/issues"
+  },
+  "homepage": "https://github.com/maoserr/tsepub#readme",
+  "devDependencies": {
+    "lodash": "^4.17.21",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "image-type": "^5.1.0",
+    "jszip": "^3.10.1",
+    "uuid": "^9.0.0"
+  }
+}
