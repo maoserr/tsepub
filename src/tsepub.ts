@@ -1,22 +1,14 @@
 import imageType from 'image-type';
-import * as JSZip from "jszip";
+import JSZip from "jszip";
 import {OutputType} from "jszip";
 import {v4 as uuidv4} from 'uuid';
 
-import * as utils from './utils';
+import * as utils from './utils.js';
 
-import container from '../template/META-INF/container.xml';
-import cover from '../template/OEBPS/front-cover.html.ejs';
-import notes from '../template/OEBPS/notes.html.ejs';
-import page from '../template/OEBPS/page.html.ejs';
-import tocInBook from '../template/OEBPS/table-of-contents.html.ejs';
-import info from '../template/OEBPS/title-page.html.ejs';
-import bookConfig from '../template/book.opf.ejs';
-import toc from '../template/toc.ncx.ejs';
-import * as ejs from 'ejs';
+import  from './templates.js'
 
 
-let language = {
+let language:{ [name: string]: LangType } = {
     "en": {
         "code": "en",
         "cover": "Cover",
@@ -74,23 +66,8 @@ export default class jEpub {
     private readonly _Images: {[key: string]: ImgType} = {};
     private _Zip: JSZip;
 
-    constructor() {
-    }
-
-    init(details) {
-        if (details instanceof JSZip) {
-            this._Zip = details;
-            return this;
-        }
-
-        this._Info = Object.assign({}, {
-            i18n: 'en',
-            title: 'undefined',
-            author: 'undefined',
-            publisher: 'undefined',
-            description: '',
-            tags: []
-        }, details);
+    constructor(details: InfoType) {
+        this._Info = details;
 
         this._Uuid = {
             scheme: 'uuid',
@@ -104,7 +81,7 @@ export default class jEpub {
 
         this._Zip = new JSZip();
         this._Zip.file('mimetype', mime);
-        this._Zip.file('META-INF/container.xml', container);
+        this._Zip.file('META-INF/container.xml', tpl.container);
         this._Zip.file('OEBPS/title-page.html', ejs.render(info, {
             i18n: this._I18n,
             title: this._Info.title,
