@@ -25,7 +25,7 @@ export function getISODate(date = new Date()) {
  * @param {String} html
  * @param {String} outText return as plain text
  */
-export function parseDOM(html, outText = false) {
+export function parseDOM(html:string, outText = false) {
     let doc = (new DOMParser).parseFromString(
         `<!doctype html><body>${html}`,
         'text/html');
@@ -39,7 +39,7 @@ export function parseDOM(html, outText = false) {
  * @param {String} html
  * @param noBr
  */
-export function html2text(html, noBr = false) {
+export function html2text(html:string, noBr = false) {
     html = html.replace(/<style([\s\S]*?)<\/style>/gi, '');
     html = html.replace(/<script([\s\S]*?)<\/script>/gi, '');
     html = html.replace(/<\/(div|p|li|dd|h[1-6])>/gi, '\n');
@@ -56,7 +56,7 @@ export function html2text(html, noBr = false) {
  * @see https://gist.github.com/dperini/729294
  * @param {String} value
  */
-export function validateUrl(value) {
+export function validateUrl(value:string) {
     return /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 }
 
@@ -64,7 +64,7 @@ export function validateUrl(value) {
  * Convert MIME type to extension
  * @param {String} mime
  */
-export function mime2ext(mime) {
+export function mime2ext(mime: string) {
     let ext = null;
     switch (mime) {
     case 'image/jpg':
