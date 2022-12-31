@@ -24,4 +24,4 @@ const module = "export const templates = {\n"
     + srcs.join(",\n") +
     "}\nexport default templates;"
 
-fs.writeFileSync('src/templates.js', module, 'utf8');
+fs.writeFileSync('src/out_templates.js', module, 'utf8');

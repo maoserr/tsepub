@@ -5,37 +5,16 @@ import {v4 as uuidv4} from 'uuid';
 
 import * as utils from './utils.js';
 
-import templates from './templates.js'
-
-
-let language: { [name: string]: LangType } = {
-    "en": {
-        "code": "en",
-        "cover": "Cover",
-        "toc": "Table of Contents",
-        "info": "Information",
-        "note": "Notes"
-    },
-    "vi": {
-        "code": "vi",
-        "cover": "Bìa sách",
-        "toc": "Mục lục",
-        "info": "Giới thiệu",
-        "note": "Ghi chú"
-    },
-    "hi": {
-        "code": "hi",
-        "cover": "आवरण",
-        "toc": "विषय - सूची",
-        "info": "जानकारी",
-        "note": "टिप्पणियाँ"
-    }
-}
+import language from './langs.json';
+import templates from './out_templates.js';
 
 let mime = 'application/epub+zip';
 
+/**
+ * Main Epub info
+ */
 interface InfoType {
-    i18n: string
+    i18n: keyof typeof language
     title: string
     author: string
     publisher: string
@@ -43,6 +22,9 @@ interface InfoType {
     tags: [string]
 }
 
+/**
+ * JSON language configuration fields
+ */
 interface LangType {
     code: string
     cover: string
@@ -51,11 +33,17 @@ interface LangType {
     note: string
 }
 
+/**
+ * Image type configuration
+ */
 interface ImgType {
     type: string
     path: string
 }
 
+/**
+ * Main epub generator class
+ */
 export default class jEpub {
     private _I18n: LangType;
     private _Info: InfoType;
