@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/maoserr/tsepub#readme",
   "devDependencies": {
-    "@types/uuid": "^9.0.0",
+    "@types/uuid": "^9.0.1",
     "lodash": "^4.17.21",
     "typescript": "^4.9.5"
   },
