@@ -8,8 +8,8 @@
   "scripts": {
     "watch": "tsc -w --sourcemap",
     "compile": "node compile_template.js",
-    "build": "tsc",
-    "package": "npm run compile && npm run build && npm pack",
+    "build": "npm run compile && tsc",
+    "package": "npm run build && npm pack",
     "test": "jest",
     "all": "npm run package && npm test"
   },
@@ -37,13 +37,14 @@
   },
   "homepage": "https://github.com/maoserr/tsepub#readme",
   "devDependencies": {
+    "@types/node": "^18.15.0",
     "@types/uuid": "^9.0.1",
-    "lodash": "^4.17.21",
     "typescript": "^4.9.5"
   },
   "dependencies": {
     "image-type": "^5.2.0",
     "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
     "uuid": "^9.0.0"
   }
 }

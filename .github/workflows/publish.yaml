@@ -1,0 +1,36 @@
+name: Build & Publish
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  MAJOR_VER: 1
+  MINOR_VER: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Set patch version to run number
+        run: npm pkg set 'version'="$MAJOR_VER.$MINOR_VER.${{ github.run_number }}"
+      - name: Install modules
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Publish to npm
+        run: npm publish --access public
+        if: github.ref == 'refs/heads/main'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: v${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ github.run_number }}

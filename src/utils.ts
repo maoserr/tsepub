@@ -1,17 +1,4 @@
 /**
- * Checks if a value is empty
- * @returns {boolean}
- */
-export function isEmpty(val) {
-    if (val === null) {
-        return true;
-    } else if (typeof val === 'string') {
-        return !val.trim();
-    }
-    return false;
-}
-
-/**
  * Get current moment in ISO format
  * @param {Object} date
  * @returns {string} ISO date
@@ -29,7 +16,10 @@ export function parseDOM(html:string, outText = false) {
     let doc = (new DOMParser).parseFromString(
         `<!doctype html><body>${html}`,
         'text/html');
-    if (outText) return doc.body.textContent.trim();
+    if (outText) {
+        const txt = doc.body.textContent ?? ""
+        return txt.trim();
+    }
     let docstr = (new XMLSerializer).serializeToString(doc.body);
     return docstr.replace(/(^<body\s?[^>]*>|<\/body>$)/g, '');
 }

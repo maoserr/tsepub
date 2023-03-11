@@ -1,14 +1,16 @@
 import imageType from 'image-type';
 import JSZip from "jszip";
-import {OutputType, OnUpdateCallback} from "jszip";
+import {OnUpdateCallback} from "jszip";
 import {v4 as uuidv4} from 'uuid';
 
 import * as utils from './utils.js';
 
 import language from './langs.json';
-import templates from './out_templates.js';
+
+import templates from './templates.js'
 
 let mime = 'application/epub+zip';
+const default_img = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 
 /**
  * Main Epub info
@@ -19,7 +21,7 @@ interface InfoType {
     author: string
     publisher: string
     description: string
-    tags: [string]
+    tags?: [string]
 }
 
 /**
@@ -44,7 +46,7 @@ interface ImgType {
 /**
  * Main epub generator class
  */
-export default class jEpub {
+export class TsEpub {
     private _I18n: LangType;
     private _Info: InfoType;
     private _Uuid: { scheme: string, id: string };
@@ -88,21 +90,17 @@ export default class jEpub {
     }
 
     uuid(id: string) {
-        if (utils.isEmpty(id)) {
-            throw 'UUID value is empty';
-        } else {
-            let scheme = 'uuid';
-            if (utils.validateUrl(id))
-                scheme = 'URI';
-            this._Uuid = {
-                scheme: scheme,
-                id: id
-            };
-            return this;
-        }
+        let scheme = 'uuid';
+        if (utils.validateUrl(id))
+            scheme = 'URI';
+        this._Uuid = {
+            scheme: scheme,
+            id: id
+        };
+        return this;
     }
 
-    async cover(data: Blob | ArrayBuffer) {
+    async cover(data: Blob ) {
         const ext = this.addimage(data)
 
         this._Cover = {
@@ -117,7 +115,7 @@ export default class jEpub {
         return this;
     }
 
-    async image(data: Blob | ArrayBuffer, name: string) {
+    async image(data: Blob, name: string) {
         const ext = this.addimage(data)
         this._Images[name] = {
             type: mime,
@@ -126,18 +124,10 @@ export default class jEpub {
         this._Zip.file(`OEBPS/assets/${name}.${ext}`, data);
     }
 
-    private async addimage(data: Blob | ArrayBuffer): Promise<string> {
+    private addimage(data: Blob): string {
         let ext, mime = "";
-        if (data instanceof Blob) {
-            mime = data.type;
-            ext = utils.mime2ext(mime);
-        } else {
-            ext = await imageType(new Uint8Array(data));
-            if (ext) {
-                mime = ext.mime;
-                ext = utils.mime2ext(mime);
-            }
-        }
+        mime = data.type;
+        ext = utils.mime2ext(mime);
         if (!ext) throw 'Image data is not allowed';
         return ext;
     }
@@ -152,17 +142,16 @@ export default class jEpub {
 
     add(title: string, content: string) {
         const index = this._Pages.length
-        if (!Array.isArray(content)) {
-            const template = ejs.compile(content, {
-                client: true
-            });
-            content = template({
-                image: this._Images
-            }, data => {
-                return `<img src="${(data ? data.path : 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=')}" alt="" />`;
-            });
-            content = utils.parseDOM(content);
+        for (let k in this._Images) {
+            const data = this._Images[k]
+            console.log(k)
+            console.log(content)
+            content = content.replace(new RegExp("<%=\\s*image\\[0]\\s*%>", "g"),
+                `<img src="${(data ? data.path : default_img)}" alt="" />`)
+            console.log(content)
         }
+        console.log(content)
+        content = utils.parseDOM(content);
         this._Zip.file(`OEBPS/page-${index}.html`, templates.page({
             i18n: this._I18n,
             title: title,

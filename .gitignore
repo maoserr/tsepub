@@ -1,3 +1,4 @@
 /node_modules/
 /dist/
-src/out_templates.js
+src/templates.js
+/tsepub.iml

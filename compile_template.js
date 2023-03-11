@@ -12,16 +12,22 @@ const templates = {
     tocncx: "toc.ncx.ejs"
 }
 
+lodash.templateSettings.escape = /<%=(.+?)%>/g
+lodash.templateSettings.interpolate = /<%-(.+?)%>/g
+lodash.templateSettings.evaluate = /<%(.+?)%>/g
+
+
 let srcs = []
 for (let k in templates) {
     const path = templates[k]
     const compiled = lodash.template(
-        fs.readFileSync(`template/${path}`, 'utf8'));
+        fs.readFileSync(`template/${path}`, 'utf8'),
+        {'variable': 'data'});
     srcs.push(`${k}: ${compiled.source}`)
 }
 
-const module = "export const templates = {\n"
+const module = "import _ from 'lodash';\nexport const templates = {\n"
     + srcs.join(",\n") +
     "}\nexport default templates;"
 
-fs.writeFileSync('src/out_templates.js', module, 'utf8');
+fs.writeFileSync('src/templates.js', module, 'utf8');
