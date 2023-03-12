@@ -13,6 +13,9 @@
     "allowJs": true
   },
   "baseUrl": "./src",
+  "exclude": [
+    "./src/**/*.spec.ts"
+  ],
   "include": [
     "./src/**/*.ts",
     "./src/templates.js"
