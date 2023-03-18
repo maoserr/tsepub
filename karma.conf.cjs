@@ -1,9 +1,15 @@
 module.exports = function(config) {
     config.set({
-        frameworks: ["jasmine", "karma-typescript"],
+        singleRun: true,
+        frameworks: ["mocha", "karma-typescript"],
         files: [
-            "src/**/*.spec.ts"
+            "int_tests/**/*.spec.ts"
         ],
+        client: {
+            mocha: {
+                opts: '.mocharc.cjs'
+            }
+        },
         preprocessors: {
             "**/*.ts": "karma-typescript"
         },
@@ -11,3 +17,4 @@ module.exports = function(config) {
         browsers: ["Chrome"]
     });
 };
+

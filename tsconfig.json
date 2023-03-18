@@ -15,6 +15,7 @@
   "baseUrl": "./src",
   "exclude": [
     "./tests/",
+    "./int_tests/",
     "./node_modules/",
     "./dist/"
   ],

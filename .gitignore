@@ -2,3 +2,4 @@
 /dist/
 src/templates.js
 /tsepub.iml
+coverage/

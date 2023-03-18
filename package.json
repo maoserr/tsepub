@@ -11,6 +11,7 @@
     "build": "npm run compile && tsc",
     "package": "npm run build && npm pack",
     "test": "mocha",
+    "int_test": "karma start karma.conf.cjs",
     "all": "npm run package && npm test"
   },
   "publishConfig": {
@@ -46,6 +47,7 @@
     "jsdom": "21.1.1",
     "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.1",
+    "karma-mocha": "^2.0.1",
     "karma-typescript": "^5.5.3",
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1",
