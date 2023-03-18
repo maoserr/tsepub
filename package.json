@@ -10,7 +10,7 @@
     "compile": "node compile_template.js",
     "build": "npm run compile && tsc",
     "package": "npm run build && npm pack",
-    "test": "mocha --experimental-json-modules ",
+    "test": "mocha",
     "all": "npm run package && npm test"
   },
   "publishConfig": {

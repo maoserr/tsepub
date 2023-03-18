@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import {InfoType, LangType, ImgType} from './models.js';
 import * as utils from './utils.js';
-import language from './langs.json';
+import language from './langs.json' assert {type: 'json'};
 import templates from './templates.js'
 
 const default_mime = 'application/epub+zip';
