@@ -1,6 +1,8 @@
-import {TsEpub} from './tsepub.js';
+import {TsEpub} from '../src/tsepub.js';
 import 'mocha';
-describe('First test',
+import {expect} from "chai";
+
+describe('Add chapter',
     () => {
         it('should return true', async() => {
             const tsepub = new TsEpub({
