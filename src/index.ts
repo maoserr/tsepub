@@ -1,3 +1,3 @@
-import {TsEpub} from './tsepub.js'
+import {TsEpub} from './tsepub'
 
 export {TsEpub}

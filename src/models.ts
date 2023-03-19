@@ -1,4 +1,4 @@
-import language from "./langs.json" assert {type: 'json'};
+import language from './langs';
 
 
 /**

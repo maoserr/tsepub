@@ -2,10 +2,10 @@ import JSZip from "jszip";
 import {OnUpdateCallback} from "jszip";
 import {v4 as uuidv4} from 'uuid';
 
-import {InfoType, LangType, ImgType} from './models.js';
-import * as utils from './utils.js';
-import language from './langs.json' assert {type: 'json'};
-import templates from './templates.js'
+import {InfoType, LangType, ImgType} from './models';
+import * as utils from './utils';
+import language from './langs';
+import templates from './templates'
 
 const default_mime = 'application/epub+zip';
 const output_type = "blob"

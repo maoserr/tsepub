@@ -1,4 +1,4 @@
-import {TsEpub} from '../src/tsepub.js';
+import {TsEpub} from '../src';
 import 'mocha';
 import {expect} from "chai";
 

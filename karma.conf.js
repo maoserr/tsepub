@@ -5,16 +5,21 @@ module.exports = function(config) {
         files: [
             "int_tests/**/*.spec.ts"
         ],
-        client: {
-            mocha: {
-                opts: '.mocharc.cjs'
-            }
+        karmaTypescriptConfig: {
+            compilerOptions: {
+                emitDecoratorMetadata: true,
+                experimentalDecorators: true,
+                module: "commonjs",
+                sourceMap: true,
+                target: "ES5"
+            },
+            exclude: ["node_modules"]
         },
         preprocessors: {
             "**/*.ts": "karma-typescript"
         },
         reporters: ["progress", "karma-typescript"],
-        browsers: ["Chrome"]
+        browsers: ["ChromeHeadless"]
     });
 };
 

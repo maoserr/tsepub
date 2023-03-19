@@ -7,11 +7,11 @@
   "types": "dist/index.d.js",
   "scripts": {
     "watch": "tsc -w --sourcemap",
-    "compile": "node compile_template.js",
+    "compile": "node compile_template.mjs",
     "build": "npm run compile && tsc",
     "package": "npm run build && npm pack",
     "test": "mocha",
-    "int_test": "karma start karma.conf.cjs",
+    "int_test": "karma start",
     "all": "npm run package && npm test"
   },
   "publishConfig": {
@@ -20,7 +20,6 @@
   "files": [
     "dist"
   ],
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/maoserr/tsepub.git"
