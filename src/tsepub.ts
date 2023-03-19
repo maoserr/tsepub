@@ -43,7 +43,7 @@ export class TsEpub {
 
         this._Zip = new JSZip();
         this._Zip.file('mimetype', default_mime);
-        this._Zip.file('META-INF/container.xml', templates.container());
+        this._Zip.file('META-INF/container.xml', templates.container({}));
         this._Zip.file('OEBPS/title-page.html', templates.titlepage({
             i18n: this._I18n,
             title: this._Info.title,

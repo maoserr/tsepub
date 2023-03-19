@@ -3,17 +3,16 @@ module.exports = function(config) {
         singleRun: true,
         frameworks: ["mocha", "karma-typescript"],
         files: [
-            "int_tests/**/*.spec.ts"
+            "int_tests/**/*.spec.ts",
+            "src/**/*.ts"
         ],
         karmaTypescriptConfig: {
             compilerOptions: {
-                emitDecoratorMetadata: true,
-                experimentalDecorators: true,
                 module: "commonjs",
-                sourceMap: true,
-                target: "ES5"
-            },
-            exclude: ["node_modules"]
+                target: "ES5",
+                esModuleInterop: true,
+                allowJs: true
+            }
         },
         preprocessors: {
             "**/*.ts": "karma-typescript"
