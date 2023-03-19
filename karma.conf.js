@@ -10,8 +10,7 @@ module.exports = function(config) {
             compilerOptions: {
                 module: "commonjs",
                 target: "ES5",
-                esModuleInterop: true,
-                allowJs: true
+                esModuleInterop: true
             }
         },
         preprocessors: {
