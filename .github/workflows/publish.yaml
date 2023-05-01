@@ -2,7 +2,7 @@ name: Build & Publish
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 env:
   MAJOR_VER: 1
@@ -24,6 +24,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Test
+        run: npm run test
       - name: Publish to npm
         run: npm publish --access public
         if: github.ref == 'refs/heads/main'

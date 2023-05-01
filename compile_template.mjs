@@ -27,7 +27,12 @@ for (let k in templates) {
 }
 
 const module = "import _ from 'lodash';\nexport const templates = {\n"
-    + srcs.join(",\n") +
+    + srcs.join(",\n")
+        .replaceAll("\(data\)","(data:any)")
+        .replaceAll("\(title, index\)", "(title:any, index:any)")
+        .replaceAll("\(page, index\)", "(page:any, index:any)")
+        .replaceAll("(tag =>", "((tag:any) =>")
+    +
     "}\nexport default templates;"
 
-fs.writeFileSync('src/templates.js', module, 'utf8');
+fs.writeFileSync('src/templates.ts', module, 'utf8');

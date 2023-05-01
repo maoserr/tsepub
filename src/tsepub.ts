@@ -1,53 +1,21 @@
-import imageType from 'image-type';
 import JSZip from "jszip";
 import {OnUpdateCallback} from "jszip";
 import {v4 as uuidv4} from 'uuid';
 
-import * as utils from './utils.js';
+import {InfoType, LangType, ImgType} from './models';
+import * as utils from './utils';
+import language from './langs';
+import templates from './templates'
 
-import language from './langs.json';
-
-import templates from './templates.js'
-
-let mime = 'application/epub+zip';
+const default_mime = 'application/epub+zip';
+const output_type = "blob"
 const default_img = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-
-/**
- * Main Epub info
- */
-interface InfoType {
-    i18n: keyof typeof language
-    title: string
-    author: string
-    publisher: string
-    description: string
-    tags?: [string]
-}
-
-/**
- * JSON language configuration fields
- */
-interface LangType {
-    code: string
-    cover: string
-    toc: string
-    info: string
-    note: string
-}
-
-/**
- * Image type configuration
- */
-interface ImgType {
-    type: string
-    path: string
-}
 
 /**
  * Main epub generator class
  */
 export class TsEpub {
-    private _I18n: LangType;
+    private readonly _I18n: LangType;
     private _Info: InfoType;
     private _Uuid: { scheme: string, id: string };
     private _Date: string;
@@ -56,6 +24,10 @@ export class TsEpub {
     private readonly _Images: { [key: string]: ImgType } = {};
     private _Zip: JSZip;
 
+    /**
+     * Creates a TsEpub instance
+     * @param details Book metadata
+     */
     constructor(details: InfoType) {
         this._Info = details;
 
@@ -70,8 +42,8 @@ export class TsEpub {
         this._I18n = language[this._Info.i18n];
 
         this._Zip = new JSZip();
-        this._Zip.file('mimetype', mime);
-        this._Zip.file('META-INF/container.xml', templates.container());
+        this._Zip.file('mimetype', default_mime);
+        this._Zip.file('META-INF/container.xml', templates.container({}));
         this._Zip.file('OEBPS/title-page.html', templates.titlepage({
             i18n: this._I18n,
             title: this._Info.title,
@@ -84,11 +56,19 @@ export class TsEpub {
         return this;
     }
 
+    /**
+     * Set date
+     * @param date
+     */
     date(date: Date) {
         this._Date = utils.getISODate(date);
         return this;
     }
 
+    /**
+     * Set unique ID for this ebook
+     * @param id
+     */
     uuid(id: string) {
         let scheme = 'uuid';
         if (utils.validateUrl(id))
@@ -100,11 +80,15 @@ export class TsEpub {
         return this;
     }
 
-    async cover(data: Blob ) {
+    /**
+     * Sets cover with blob data
+     * @param data
+     */
+    cover(data: Blob) {
         const ext = this.addimage(data)
 
         this._Cover = {
-            type: mime,
+            type: data.type,
             path: `OEBPS/cover-image.${ext}`
         };
         this._Zip.file(this._Cover.path, data);
@@ -115,23 +99,35 @@ export class TsEpub {
         return this;
     }
 
-    async image(data: Blob, name: string) {
+    /**
+     * Sets image assets that are referencable
+     * @param data
+     * @param name
+     */
+    image(data: Blob, name: string) {
         const ext = this.addimage(data)
         this._Images[name] = {
-            type: mime,
+            type: data.type,
             path: `assets/${name}.${ext}`
         };
         this._Zip.file(`OEBPS/assets/${name}.${ext}`, data);
     }
 
+    /**
+     * Util used by cover and image to add image
+     * @param data
+     * @private
+     */
     private addimage(data: Blob): string {
-        let ext, mime = "";
-        mime = data.type;
-        ext = utils.mime2ext(mime);
+        let ext = utils.mime2ext(data.type);
         if (!ext) throw 'Image data is not allowed';
         return ext;
     }
 
+    /**
+     * Add notes page
+     * @param content
+     */
     notes(content: string) {
         this._Zip.file('OEBPS/notes.html', templates.notes({
             i18n: this._I18n,
@@ -140,17 +136,18 @@ export class TsEpub {
         return this;
     }
 
+    /**
+     * Adds a chapter/section
+     * @param title
+     * @param content HTML string
+     */
     add(title: string, content: string) {
         const index = this._Pages.length
         for (let k in this._Images) {
             const data = this._Images[k]
-            console.log(k)
-            console.log(content)
-            content = content.replace(new RegExp("<%=\\s*image\\[0]\\s*%>", "g"),
+            content = content.replace(new RegExp("<%=\\s*image\\[" + k + "]\\s*%>", "g"),
                 `<img src="${(data ? data.path : default_img)}" alt="" />`)
-            console.log(content)
         }
-        console.log(content)
         content = utils.parseDOM(content);
         this._Zip.file(`OEBPS/page-${index}.html`, templates.page({
             i18n: this._I18n,
@@ -161,9 +158,12 @@ export class TsEpub {
         return this;
     }
 
+    /**
+     * Generates a blob ePub file
+     * @param onUpdate Update callback used by JSZip
+     */
     generate(onUpdate: OnUpdateCallback | undefined = undefined) {
-        const type = "blob"
-        if (!JSZip.support[type]) throw `This browser does not support ${type}`;
+        if (!JSZip.support[output_type]) throw `This browser does not support ${output_type}`;
         let notes = this._Zip.file('OEBPS/notes.html');
 
         this._Zip.file('book.opf', templates.book({
@@ -196,8 +196,8 @@ export class TsEpub {
         }));
 
         return this._Zip.generateAsync({
-            type: type,
-            mimeType: mime,
+            type: output_type,
+            mimeType: default_mime,
             compression: 'DEFLATE',
             compressionOptions: {
                 level: 9

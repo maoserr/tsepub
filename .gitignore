@@ -1,4 +1,5 @@
 /node_modules/
 /dist/
-src/templates.js
+src/templates.ts
 /tsepub.iml
+coverage/
