@@ -44,7 +44,7 @@
     "@types/uuid": "^9.0.1",
     "chai": "^4.3.7",
     "global-jsdom": "8.8.0",
-    "jsdom": "21.1.1",
+    "jsdom": "21.1.2",
     "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.1",
     "karma-mocha": "^2.0.1",
