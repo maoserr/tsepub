@@ -3,3 +3,4 @@
 src/templates.ts
 /tsepub.iml
 coverage/
+.idea/
