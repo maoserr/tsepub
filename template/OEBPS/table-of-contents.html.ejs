@@ -13,8 +13,8 @@
 		<ul>
             <% data.pages.forEach((title, index) => { %>
                 <li class="chaptertype-1">
-                    <a href="page-<%= index %>.html">
-                        <span class="toc-chapter-title"><%= title %></span>
+                    <a href="page-<%= index %>-<%= title.fname %>.html">
+                        <span class="toc-chapter-title"><%= title.title %></span>
                     </a>
                 </li>
             <% }); %>
