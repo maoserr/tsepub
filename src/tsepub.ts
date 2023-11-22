@@ -20,7 +20,7 @@ export class TsEpub {
   private _Uuid: { scheme: string, id: string };
   private _Date: string;
   private _Cover?: { path: string; type: any };
-  private readonly _Pages: string[] = [];
+  private readonly _Pages: { title: string, fname: string }[] = [];
   private readonly _Images: { [key: string]: ImgType } = {};
   private _Zip: JSZip;
 
@@ -158,7 +158,7 @@ export class TsEpub {
       title: title,
       content: content
     }));
-    this._Pages.push(title);
+    this._Pages.push({title: title, fname: fname});
     return this;
   }
 

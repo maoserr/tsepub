@@ -33,9 +33,9 @@
         <% data.pages.forEach((title, index) => { %>
             <navPoint id="page-<%= index %>" playOrder="<%= (index + 3) %>">
                 <navLabel>
-                    <text><%= title %></text>
+                    <text><%= title.title %></text>
                 </navLabel>
-                <content src="OEBPS/page-<%= index %>.html" />
+                <content src="OEBPS/page-<%= index %>-<%= title.fname %>.html" />
             </navPoint>
         <% }); %>
         <% if (data.notes) { %>
