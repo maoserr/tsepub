@@ -103,12 +103,14 @@ export class TsEpub {
    * Sets image assets that are referencable
    * @param data
    * @param name
+   * @param alt
    */
-  image(data: Blob, name: string) {
+  image(data: Blob, name: string, alt?:string) {
     const ext = this.addimage(data)
     this._Images[name] = {
       type: data.type,
-      path: `assets/${name}.${ext}`
+      path: `assets/${name}.${ext}`,
+      alt: alt
     };
     this._Zip.file(`OEBPS/assets/${name}.${ext}`, data);
   }
@@ -146,7 +148,7 @@ export class TsEpub {
     for (let k in this._Images) {
       const data = this._Images[k]
       content = content.replace(new RegExp("<%=\\s*image\\[" + k + "]\\s*%>", "g"),
-        `<img src="${(data ? data.path : default_img)}" alt="" />`)
+        `<img src="${(data ? data.path : default_img)}" ${(data.alt ? 'alt="'+data.alt + '"' : "")} />`)
     }
     content = utils.parseDOM(content);
     let fname = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();

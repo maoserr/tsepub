@@ -30,4 +30,5 @@ export interface LangType {
 export interface ImgType {
     type: string
     path: string
+    alt?: string
 }
