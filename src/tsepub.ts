@@ -152,10 +152,10 @@ export class TsEpub {
     }
     content = utils.parseDOM(content);
     let fname = title.replace(/[/\\?%*:|"<>]/gi, '_').toLowerCase();
-    if (fname.length > 100) {
-      fname = fname.substring(0, 100)
+    if (fname.length > 50) {
+      fname = fname.substring(0, 50)
     }
-    this._Zip.file(`OEBPS/page-${index}-${fname}.html`, templates.page({
+    this._Zip.file(`OEBPS/page-${index}-${fname}-${Date.now().toString()}.html`, templates.page({
       i18n: this._I18n,
       title: title,
       content: content
