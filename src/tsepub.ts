@@ -155,7 +155,8 @@ export class TsEpub {
     if (fname.length > 50) {
       fname = fname.substring(0, 50)
     }
-    this._Zip.file(`OEBPS/page-${index}-${fname}-${Date.now().toString()}.html`, templates.page({
+    fname = fname + "-" + Date.now().toString()
+    this._Zip.file(`OEBPS/page-${index}-${fname}.html`, templates.page({
       i18n: this._I18n,
       title: title,
       content: content
