@@ -151,7 +151,7 @@ export class TsEpub {
         `<img src="${(data ? data.path : default_img)}" ${(data.alt ? 'alt="'+data.alt + '"' : "")} />`)
     }
     content = utils.parseDOM(content);
-    let fname = title.replace(/[/\\?%*:|"<>]/gi, '_').toLowerCase();
+    let fname = title.replace(/[/\\?%*:|"<>#,`’]/gi, '_').toLowerCase();
     if (fname.length > 50) {
       fname = fname.substring(0, 50)
     }
